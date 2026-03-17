@@ -104,20 +104,44 @@ def handleFunction(func, deriv):
 
     fig, ax = plt.subplots()
 
-    x = np.linspace(dolna_granica, gorna_granica, 100)
+    x = np.linspace(dolna_granica - 1, gorna_granica + 1, 100)
     y = func(x)
 
     plt.plot(x, y, label="f(x)", color="blue")
+
     plt.axhline(0, color="black", linewidth="1")
 
     wynik_bisekcji = handleBisekcja(func, dolna_granica, gorna_granica, typ_warunku, warunek_stopu)
     wynik_stycznych = handleStyczne(func, deriv, dolna_granica, typ_warunku, warunek_stopu)
 
     if wynik_bisekcji is not None:
-        plt.scatter(wynik_bisekcji, func(wynik_bisekcji), color="red", s=75, zorder=5, label="Metoda bisekcja")
+        plt.scatter(wynik_bisekcji, func(wynik_bisekcji), color="navy", s=150, zorder=5, label="Metoda bisekcja")
+        format_bisekcji = f"{wynik_bisekcji:.8f}"
+        plt.annotate(
+            format_bisekcji, 
+            xy=(wynik_bisekcji, func(wynik_bisekcji)),
+            xytext=(-40, 40),
+            textcoords="offset points",
+            ha="right",
+            rotation=45,
+            bbox=dict(boxstyle="round,pad=0.3", fc="gray", ec="navy", alpha=0.8),
+            arrowprops=dict(arrowstyle="->")
+        )
     
     if wynik_stycznych is not None:
-        plt.scatter(wynik_stycznych, func(wynik_stycznych), color="magenta", marker="x", s=100, zorder=5, label="Metoda stycznych")
+        plt.scatter(wynik_stycznych, func(wynik_stycznych), color="darkorange", marker="x", s=200, zorder=5, label="Metoda stycznych")
+        format_stycznych = f"{wynik_stycznych:.8f}"
+        plt.annotate(
+            format_stycznych, 
+            xy=(wynik_stycznych, func(wynik_stycznych)), 
+            xytext=(40, -40), 
+            textcoords="offset points",
+            ha="left",
+            rotation=45,
+            bbox=dict(boxstyle="round,pad=0.3", fc="gray", ec="darkorange"
+            "", alpha=0.8),
+            arrowprops=dict(arrowstyle="->")
+        )
 
     plt.title("Miejsca zerowe zadanej funkcji na zadanym przedziale.")
     plt.legend()
