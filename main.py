@@ -31,6 +31,12 @@ def handleBisekcja(func, a, b, typ_warunku, warunek_stopu, licznik_iteracji=1):
 
     srodek = (a + b) / 2
 
+    if func(srodek) == 0:
+        wyczysc_ekran()
+        print(f"[Metoda Bisekcji] Znaleziono DOKŁADNY pierwiastek: {srodek}")
+        print(f"[Metoda Bisekcji] Liczba iteracji: {licznik_iteracji}")
+        return srodek
+
     if (typ_warunku == "epsilon"):
         if (abs(func(srodek)) < warunek_stopu):
             wyczysc_ekran()
@@ -99,9 +105,6 @@ def handleFunction(func, deriv):
         warunek_stopu = int(input("iter: "))
         typ_warunku = "iteracje"
 
-    handleBisekcja(func, dolna_granica, gorna_granica, typ_warunku, warunek_stopu)
-    handleStyczne(func, deriv, dolna_granica, typ_warunku, warunek_stopu)
-
     fig, ax = plt.subplots()
 
     x = np.linspace(dolna_granica - 1, gorna_granica + 1, 100)
@@ -111,8 +114,10 @@ def handleFunction(func, deriv):
 
     plt.axhline(0, color="black", linewidth="1")
 
+    srodek = (dolna_granica + gorna_granica) / 2
+
     wynik_bisekcji = handleBisekcja(func, dolna_granica, gorna_granica, typ_warunku, warunek_stopu)
-    wynik_stycznych = handleStyczne(func, deriv, dolna_granica, typ_warunku, warunek_stopu)
+    wynik_stycznych = handleStyczne(func, deriv, srodek, typ_warunku, warunek_stopu)
 
     if wynik_bisekcji is not None:
         plt.scatter(wynik_bisekcji, func(wynik_bisekcji), color="navy", s=150, zorder=5, label="Metoda bisekcja")
