@@ -2,11 +2,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
+wsp_wielomian = [1, 2, 4, 6]
+wsp_pochodna = [3, 4, 4]
+
 def wyczysc_ekran():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def f_poly(x): return x**3 + 2*x**2 + 4*x + 6
-def df_poly(x): return 3*x**2 + 4*x + 4
+def f_poly(x): return schemat_hornera(wsp_wielomian, x)
+def df_poly(x): return schemat_hornera(wsp_pochodna, x)
 
 def f_trig(x): return np.sin(x)
 def df_trig(x): return np.cos(x)
@@ -23,6 +26,12 @@ dostepne_funkcje = {
     3: ("Wykładnicza: f(x) = e^2x - 6", f_exp, df_exp),
     4: ("Złozona: f(x) = e^x - cos(x)", f_comp, df_comp)
 }
+
+def schemat_hornera(wspolczynniki, x):
+    wynik = wspolczynniki[0]
+    for i in range(1, len(wspolczynniki)):
+        wynik = wynik * x + wspolczynniki[i]
+    return wynik
 
 def handleBisekcja(func, a, b, typ_warunku, warunek_stopu, licznik_iteracji=1):
     if licznik_iteracji == 1 and (func(a) * func(b) > 0):
